@@ -11,7 +11,7 @@ async function bootstrap() {
 
   // Cấu hình CORS để cho phép truy cập từ các nguồn khác nhau
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://todo-list-dashboard-lilac.vercel.app/'],
+    origin: ['http://localhost:3000', 'https://todo-list-dashboard-lilac.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
