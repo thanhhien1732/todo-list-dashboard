@@ -7,7 +7,7 @@ import TaskForm from './TaskForm';
 import { TaskListToolbar } from './TaskListToolbar';
 import { TaskListTable } from './TaskListTable';
 import { TaskListCards } from './TaskListCards';
-import { useTaskList } from '../hooks/useTaskList';
+import { useTaskList } from '../../hooks/useTaskList';
 
 interface TaskListProps {
     refreshTrigger: number;

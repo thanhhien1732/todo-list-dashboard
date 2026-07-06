@@ -1,7 +1,7 @@
 import React from 'react';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from '@headlessui/react';
 import { Search, ListFilter, ChevronDown } from 'lucide-react';
-import { STATUS_LIST, type StatusOption } from '../constants/taskStatus';
+import { STATUS_LIST, type StatusOption } from '../../constants/taskStatus';
 
 interface TaskListToolbarProps {
     search: string;

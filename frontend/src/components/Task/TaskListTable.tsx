@@ -1,8 +1,8 @@
 import React from 'react';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from '@headlessui/react';
 import { Pencil, Trash2, ChevronDown, ArrowUp, ArrowDown } from 'lucide-react';
-import type { Task, TaskStatus } from '../types';
-import { STATUS_LIST, type StatusOption, getStatusOption } from '../constants/taskStatus';
+import type { Task, TaskStatus } from '../../types';
+import { STATUS_LIST, type StatusOption, getStatusOption } from '../../constants/taskStatus';
 
 interface TaskListTableProps {
     tasks: Task[];

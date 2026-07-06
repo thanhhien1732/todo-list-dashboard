@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import TaskList from "../components/TaskList";
+import TaskList from "../components/Task/TaskList";
 
 export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);

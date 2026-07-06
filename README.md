@@ -26,7 +26,6 @@ Một ứng dụng quản lý công việc đầy đủ giữa frontend và back
 - TypeScript
 - Prisma ORM
 - MySQL
-- Jest cho testing
 
 ## 📁 Cấu trúc dự án
 
@@ -62,19 +61,30 @@ frontend/
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
-│   │   └── trash/page.tsx
+│   │   └── trash/
+│   │       └── page.tsx
 │   ├── components/
-│   │   ├── Sidebar.tsx
-│   │   ├── TaskForm.tsx
-│   │   ├── TaskList.tsx
-│   │   ├── TaskListCards.tsx
-│   │   ├── TaskListTable.tsx
-│   │   └── TaskListToolbar.tsx
+│   │   ├── Sidebar/
+│   │   │   └── Sidebar.tsx
+│   │   ├── Task/
+│   │   │   ├── TaskForm.tsx
+│   │   │   ├── TaskList.tsx
+│   │   │   ├── TaskListCards.tsx
+│   │   │   ├── TaskListTable.tsx
+│   │   │   └── TaskListToolbar.tsx
+│   │   └── Trash/
+│   │       ├── TrashPageCards.tsx
+│   │       ├── TrashPageConfirmModal.tsx
+│   │       ├── TrashPageHeader.tsx
+│   │       ├── TrashPageTable.tsx
+│   │       ├── TrashPageToast.tsx
+│   │       └── TrashPageToolbar.tsx
 │   ├── constants/
 │   │   └── taskStatus.tsx
 │   ├── hooks/
 │   │   ├── useTaskForm.ts
-│   │   └── useTaskList.ts
+│   │   ├── useTaskList.ts
+│   │   └── useTrashPage.ts
 │   ├── services/
 │   │   └── api.ts
 │   └── types/
@@ -119,6 +129,18 @@ npm install
 
 ### 5. Cấu hình database MySQL
 
+Bạn có 2 cách để thiết lập môi trường Database:
+
+### Cách 1: Sử dụng Docker Desktop (Khuyên dùng)
+Nếu bạn đã cài Docker Desktop, bạn không cần cài MySQL thủ công. Chỉ cần dùng `docker-compose` để khởi chạy.
+
+1. Tại thư mục gốc của dự án, hãy đảm bảo đã có file `docker-compose.yml`.
+2. Chạy lệnh sau để khởi động Database:
+   ```bash
+   docker-compose up -d
+
+### Cách 2: Cài đặt MySQL thủ công
+
 Trước tiên, hãy tạo một database trong MySQL, ví dụ:
 
 ```sql
@@ -128,8 +150,8 @@ CREATE DATABASE todo_app;
 Sau đó tạo file `.env` trong thư mục `backend`:
 
 ```env
+PORT=3069
 DATABASE_URL="mysql://root:your_password@localhost:3306/todo_app"
-PORT=3001
 ```
 
 Nếu bạn dùng tài khoản khác thay vì `root`, hãy đổi lại cho phù hợp.
@@ -157,7 +179,7 @@ npm run start:dev
 Sau khi chạy thành công, backend sẽ chạy tại:
 
 ```text
-http://localhost:3001/api
+http://localhost:3069/
 ```
 
 ### 8. Khởi động frontend
@@ -178,8 +200,8 @@ http://localhost:3000
 ### 9. Truy cập ứng dụng
 
 - Giao diện frontend: http://localhost:3000
-- API backend: http://localhost:3001/api
-- Vì dự án chưa dùng Swagger, bạn có thể test API bằng Postman hoặc VS Code REST Client
+- API backend: http://localhost:3069
+- Bạn có thể xem và thử trực tiếp các API trên Swagger UI tại http://localhost:3069/docs, hoặc dùng Postman / VS Code REST Client nếu muốn.
 
 ### 10. Các lỗi thường gặp
 
@@ -195,14 +217,14 @@ npx prisma generate
 ```
 
 #### Lỗi cổng đã được dùng
-Nếu cổng `3000` hoặc `3001` đã bị chiếm, hãy đổi lại cổng hoặc dừng process đang dùng.
+Nếu cổng `3000` hoặc `3069` đã bị chiếm, hãy đổi lại cổng hoặc dừng process đang dùng.
 
 ## 🔗 Tổng quan API
 
 Sau khi khởi động backend, bạn có thể mở Swagger UI tại:
 
 ```text
-http://localhost:3001/docs
+http://localhost:3069/docs
 ```
 
 ### Tasks
@@ -215,20 +237,7 @@ http://localhost:3001/docs
 - `PATCH /api/tasks/:id/restore` - Khôi phục công việc
 - `DELETE /api/tasks/:id/permanent` - Xóa vĩnh viễn công việc
 
-## 🧪 Chạy test
-
-Chạy test backend:
-
-```bash
-cd backend
-npm test
-```
-
 ## 📝 Ghi chú
 
 - Công việc bị xóa sẽ được đưa vào thùng rác thay vì bị xóa ngay lập tức.
 - Hệ thống có job tự động dọn dẹp các công việc đã bị xóa quá hạn.
-
-## 📄 Giấy phép
-
-Dự án này được tạo cho mục đích học tập và phát triển cá nhân.
