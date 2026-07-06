@@ -101,10 +101,14 @@ Trước khi chạy dự án, hãy đảm bảo máy của bạn đã cài:
 
 - Node.js 18+ hoặc 20+
 - npm hoặc pnpm
-- MySQL Server
+- Docker Desktop
 - Git
 
 > Nếu bạn chưa cài Node.js, hãy truy cập: https://nodejs.org/
+
+> Dự án sử dụng Docker Desktop để chạy môi trường MySQL server phục vụ backend.
+
+> Tải Docker Desktop tại: https://www.docker.com/products/docker-desktop/
 
 ### 2. Clone dự án về máy
 
@@ -127,19 +131,16 @@ cd ../frontend
 npm install
 ```
 
-### 5. Cấu hình database MySQL
+### 5. Cấu hình database MySQL bằng Docker Desktop
 
-Bạn có 2 cách để thiết lập môi trường Database:
+Dự án sử dụng Docker Desktop để khởi tạo MySQL server nhanh chóng mà không cần cài MySQL trực tiếp trên máy.
 
-### Cách 1: Sử dụng Docker Desktop (Khuyên dùng)
-Nếu bạn đã cài Docker Desktop, bạn không cần cài MySQL thủ công. Chỉ cần dùng `docker-compose` để khởi chạy.
-
-1. Tại thư mục gốc của dự án, hãy đảm bảo đã có file `docker-compose.yml`.
-2. Chạy lệnh sau để khởi động Database:
+Chạy lệnh sau để tạo container MySQL:
    ```bash
-   docker-compose up -d
+   docker run --name todo-app-mysql -e MYSQL_ROOT_PASSWORD=your_password -d -p 3304:3306 mysql
+   ```
 
-### Cách 2: Cài đặt MySQL thủ công
+### Sau khi container chạy thành công, tạo file .env trong thư mục backend:
 
 Trước tiên, hãy tạo một database trong MySQL, ví dụ:
 
@@ -151,7 +152,7 @@ Sau đó tạo file `.env` trong thư mục `backend`:
 
 ```env
 PORT=3069
-DATABASE_URL="mysql://root:your_password@localhost:3306/todo_app"
+DATABASE_URL="mysql://root:your_password@localhost:3304/todo_app"
 ```
 
 Nếu bạn dùng tài khoản khác thay vì `root`, hãy đổi lại cho phù hợp.
@@ -201,7 +202,7 @@ http://localhost:3000
 
 - Giao diện frontend: http://localhost:3000
 - API backend: http://localhost:3069
-- Bạn có thể xem và thử trực tiếp các API trên Swagger UI tại http://localhost:3069/docs, hoặc dùng Postman / VS Code REST Client nếu muốn.
+- Bạn có thể xem và thử trực tiếp các API trên Swagger UI tại http://localhost:3069/docs, hoặc dùng Postman / VS Code REST Client.
 
 ### 10. Các lỗi thường gặp
 
