@@ -30,7 +30,6 @@ export class TasksController {
     );
   }
 
-  // 1. Endpoint lấy danh sách các công việc nằm trong thùng rác
   @Get('trash')
   getTrash() {
     return this.tasksService.getTrash();
@@ -46,19 +45,16 @@ export class TasksController {
     return this.tasksService.update(+id, updateTaskDto);
   }
 
-  // 2. Endpoint khôi phục công việc
   @Patch(':id/restore')
   restore(@Param('id') id: string) {
     return this.tasksService.restore(+id);
   }
 
-  // 3. Endpoint xóa mềm (Chuyển vào thùng rác)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tasksService.remove(+id);
   }
 
-  // 4. Endpoint xóa vĩnh viễn bằng tay ngay lập tức
   @Delete(':id/permanent')
   permanentDelete(@Param('id') id: string) {
     return this.tasksService.permanentDelete(+id);

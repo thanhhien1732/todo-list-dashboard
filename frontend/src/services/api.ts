@@ -1,44 +1,67 @@
 import axios from 'axios';
-import { Task } from '../types';
+import type { PaginatedResponse, Task } from '../types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3069/api';
 
-export const taskService = {
-    getAll: async (page = 1, limit = 10, search = '', status = '', sortBy = 'createdAt', sortOrder = 'desc') => {
-        const response = await axios.get(`${API_URL}/tasks`, {
-            params: { page, limit, search, status, sortBy, sortOrder }
-        });
-        return response.data;
-    },
+const apiClient = axios.create({
+    baseURL: API_URL,
+    timeout: 10000,
+});
 
-    create: async (data: Partial<Task>) => {
-        const response = await axios.post(`${API_URL}/tasks`, data);
-        return response.data;
-    },
+interface TaskListParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+}
 
-    update: async (id: number, data: Partial<Task>) => {
-        const response = await axios.patch(`${API_URL}/tasks/${id}`, data);
-        return response.data;
-    },
+interface CreateTaskPayload {
+    title: string;
+    description?: string;
+    status?: Task['status'];
+}
 
-    delete: async (id: number) => {
-        const response = await axios.delete(`${API_URL}/tasks/${id}`);
-        return response.data;
-    }, // <--- Chính là dấu phẩy này bị thiếu ở code của bạn!
+interface UpdateTaskPayload {
+    title?: string;
+    description?: string;
+    status?: Task['status'];
+}
 
-    // --- CÁC HÀM XỬ LÝ THÙNG RÁC ---
-    getTrash: async () => {
-        const response = await axios.get(`${API_URL}/tasks/trash`);
-        return response.data;
-    },
-
-    restore: async (id: number) => {
-        const response = await axios.patch(`${API_URL}/tasks/${id}/restore`);
-        return response.data;
-    },
-
-    permanentDelete: async (id: number) => {
-        const response = await axios.delete(`${API_URL}/tasks/${id}/permanent`);
+class TaskApiService {
+    async getAll(params: TaskListParams = {}): Promise<PaginatedResponse<Task>> {
+        const response = await apiClient.get<PaginatedResponse<Task>>('/tasks', { params });
         return response.data;
     }
-};
+
+    async create(data: CreateTaskPayload): Promise<Task> {
+        const response = await apiClient.post<Task>('/tasks', data);
+        return response.data;
+    }
+
+    async update(id: number, data: UpdateTaskPayload): Promise<Task> {
+        const response = await apiClient.patch<Task>(`/tasks/${id}`, data);
+        return response.data;
+    }
+
+    async delete(id: number): Promise<void> {
+        await apiClient.delete(`/tasks/${id}`);
+    }
+
+    async getTrash(): Promise<Task[]> {
+        const response = await apiClient.get<Task[]>('/tasks/trash');
+        return response.data;
+    }
+
+    async restore(id: number): Promise<Task> {
+        const response = await apiClient.patch<Task>(`/tasks/${id}/restore`);
+        return response.data;
+    }
+
+    async permanentDelete(id: number): Promise<void> {
+        await apiClient.delete(`/tasks/${id}/permanent`);
+    }
+}
+
+export const taskService = new TaskApiService();

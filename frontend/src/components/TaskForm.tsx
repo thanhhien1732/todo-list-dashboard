@@ -1,54 +1,23 @@
 "use client";
 
-import React, { useState } from 'react';
-import { CheckCircle2, LoaderCircle, PlusCircle } from 'lucide-react';
-import { taskService } from '../services/api';
-import { TaskStatus } from '../types';
+import React from 'react';
+import { LoaderCircle, PlusCircle } from 'lucide-react';
+import { useTaskForm } from '../hooks/useTaskForm';
 
 interface TaskFormProps {
-    onTaskAdded: () => void; // Hàm callback để báo cho component cha biết đã thêm xong
+    onTaskAdded: () => void;
 }
 
 export default function TaskForm({ onTaskAdded }: TaskFormProps) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [status, setStatus] = useState<TaskStatus>('NEW');
-
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState('');
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); // Ngăn trình duyệt tự động reload trang khi submit form
-        setError('');
-
-        if (!title.trim()) {
-            setError('Vui lòng nhập tiêu đề công việc!');
-            return;
-        }
-
-        try {
-            setIsSubmitting(true);
-            // Gọi API thêm mới
-            await taskService.create({
-                title,
-                description,
-                status
-            });
-
-            // Reset form về trạng thái ban đầu
-            setTitle('');
-            setDescription('');
-            setStatus('NEW');
-
-            // Báo cho component cha biết để cập nhật lại danh sách
-            onTaskAdded();
-        } catch (err) {
-            setError('Có lỗi xảy ra khi lưu công việc. Vui lòng thử lại.');
-            console.error(err);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+    const {
+        title,
+        setTitle,
+        description,
+        setDescription,
+        isSubmitting,
+        error,
+        handleSubmit,
+    } = useTaskForm({ onTaskAdded });
 
     return (
         <div className="relative overflow-hidden rounded-3xl border border-indigo-100 bg-linear-to-br from-indigo-50 via-white to-slate-50 p-4 shadow-[0_20px_60px_-20px_rgba(79,70,229,0.35)] sm:p-6">
@@ -98,8 +67,8 @@ export default function TaskForm({ onTaskAdded }: TaskFormProps) {
                             type="submit"
                             disabled={isSubmitting}
                             className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all sm:w-auto ${isSubmitting
-                                ? 'cursor-not-allowed bg-indigo-400'
-                                : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl active:scale-[0.98]'
+                                ? 'bg-indigo-400'
+                                : 'cursor-pointer bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl active:scale-[0.98]'
                                 }`}
                         >
                             {isSubmitting ? <LoaderCircle size={16} className="animate-spin" /> : <PlusCircle size={16} />}
