@@ -23,7 +23,8 @@ export default function RootLayout({
         <Sidebar />
 
         {/* Nội dung chính bên phải */}
-        <main className="flex-1 min-w-0 overflow-y-auto">
+        {/* Thêm pt-16 (khoảng cách trên) và pb-16 (khoảng cách dưới) riêng cho Mobile, reset về 0 trên Desktop */}
+        <main className="flex-1 overflow-auto pt-16 pb-16 md:pt-0 md:pb-0">
           {children}
         </main>
 
