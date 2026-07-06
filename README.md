@@ -140,14 +140,6 @@ Chạy lệnh sau để tạo container MySQL:
    docker run --name todo-app-mysql -e MYSQL_ROOT_PASSWORD=your_password -d -p 3304:3306 mysql
    ```
 
-### Sau khi container chạy thành công, tạo file .env trong thư mục backend:
-
-Trước tiên, hãy tạo một database trong MySQL, ví dụ:
-
-```sql
-CREATE DATABASE todo_app;
-```
-
 Sau đó tạo file `.env` trong thư mục `backend`:
 
 ```env
