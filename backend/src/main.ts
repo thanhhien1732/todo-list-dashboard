@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { Logger } from '@nestjs/common/services/logger.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,15 +25,26 @@ async function bootstrap() {
     }),
   );
 
+  const config = new DocumentBuilder()
+    .setTitle('Todo App API')
+    .setDescription('Tài liệu API cho hệ thống quản lý công việc')
+    .setVersion('1.0')
+    .addTag('tasks')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
+
   // Đọc biến PORT từ file .env, nếu không có thì mặc định lấy 3000
   const logger = new Logger('Bootstrap');
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT') ?? 3000;
+  const port = configService.get<number>('PORT') ?? 3001;
 
   // Đợi ứng dụng khởi chạy xong
   await app.listen(port);
 
   // In ra log bằng Logger của NestJS
   logger.log(`Server is running on: http://localhost:${port}`);
+  logger.log(`Swagger documentation: http://localhost:${port}/docs`);
 }
 bootstrap();
