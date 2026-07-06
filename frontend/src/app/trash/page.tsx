@@ -38,7 +38,7 @@ export default function TrashPage() {
             try {
                 setLoading(true);
                 const data = await taskService.getTrash();
-                setTasks(data.data || data || []);
+                setTasks((data as any).data || data || []);
             } catch (error) {
                 console.error("Không thể tải thùng rác", error);
             } finally {
