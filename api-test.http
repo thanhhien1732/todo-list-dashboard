@@ -1,0 +1,51 @@
+### BỘ TEST API QUẢN LÝ CÔNG VIỆC (TODO APP) ###
+
+# 1. Thêm công việc mới
+POST http://localhost:3069/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Phân tích yêu cầu và thiết kế Database cho module Thanh toán",
+  "description": "Làm việc với team BA để chốt flow. Thiết kế schema bằng Prisma và viết tài liệu mô tả các bảng dữ liệu.",
+  "status": "TODO"
+}
+
+### 
+
+# 2. Lấy danh sách công việc (Kèm phân trang mặc định)
+GET http://localhost:3069/api/tasks
+
+###
+
+# 2.1. Lấy danh sách công việc (Có test bộ lọc và tìm kiếm)
+GET http://localhost:3069/api/tasks?page=1&limit=5&status=TODO&search=Intern
+
+###
+
+# 3. Lấy chi tiết một công việc
+GET http://localhost:3069/api/tasks/2
+
+###
+
+# 4. Chỉnh sửa trạng thái công việc
+PATCH http://localhost:3069/api/tasks/1
+Content-Type: application/json
+
+{
+  "status": "IN_PROGRESS"
+}
+
+###
+
+# 5. Xóa mềm công việc
+DELETE http://localhost:3069/api/tasks/1
+
+###
+
+# 6. Kiểm tra lại danh sách (Sẽ không thấy công việc ID = 1 nữa vì đã bị xóa mềm)
+GET http://localhost:3069/api/tasks
+
+###
+
+# 7. Khôi phục lại công việc đã xóa 
+PATCH http://localhost:3069/api/tasks/1/restore

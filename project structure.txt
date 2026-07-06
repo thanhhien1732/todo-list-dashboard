@@ -1,0 +1,34 @@
+backend/
+├── prisma/
+│   └── schema.prisma      # Nơi định nghĩa các bảng trong Database (bảng Task)
+├── src/
+│   ├── main.ts            # File khởi chạy server Backend
+│   ├── app.module.ts      # Module gốc, gom các module con lại
+│   ├── prisma/            # Module xử lý kết nối Database
+│   │   ├── prisma.module.ts
+│   │   └── prisma.service.ts
+│   └── tasks/             # Module cốt lõi xử lý nghiệp vụ Công việc (Todo)
+│       ├── dto/           # Chứa các file định nghĩa dữ liệu đầu vào (VD: CreateTaskDto)
+│       ├── tasks.controller.ts # Nhận request từ Frontend (GET, POST, PUT, DELETE)
+│       ├── tasks.service.ts    # Chứa logic xử lý, gọi Prisma để query Database
+│       └── tasks.module.ts     # Gói Controller và Service của tasks lại
+├── .env                   # Chứa chuỗi kết nối Database (DATABASE_URL)
+└── package.json
+
+frontend/
+├── src/
+│   ├── app/               # Xử lý Routing (Đường dẫn trang web)
+│   │   ├── layout.tsx     # Layout chung (Header, Footer, thẻ meta)
+│   │   ├── page.tsx       # Trang chủ (Hiển thị toàn bộ giao diện Todo List)
+│   │   └── globals.css    # File cấu hình CSS và Tailwind
+│   ├── components/        # Chứa các mảnh giao diện (UI) tái sử dụng
+│   │   ├── TaskList.tsx   # Hiển thị danh sách các công việc
+│   │   ├── TaskItem.tsx   # Hiển thị 1 công việc cụ thể (có nút sửa, xóa, checkbox)
+│   │   └── TaskForm.tsx   # Ô input để nhập thêm công việc mới hoặc tìm kiếm
+│   ├── services/          # Nơi chứa code gọi API xuống Backend
+│   │   └── api.ts         # Khởi tạo fetch hoặc axios để gọi NestJS API
+│   └── types/             # Chứa các kiểu dữ liệu (TypeScript Interfaces)
+│       └── index.ts       # Định nghĩa interface Task khớp với Backend
+├── .env.local             # Chứa URL của Backend (VD: NEXT_PUBLIC_API_URL)
+├── tailwind.config.ts
+└── package.json
