@@ -9,8 +9,12 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api'); // Thêm tiền tố "api" cho tất cả các route
 
-  // Bật CORS để FE chạy ở port khác có thể gọi API vào đây
-  app.enableCors();
+  // Cấu hình CORS để cho phép truy cập từ các nguồn khác nhau
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://todo-list-dashboard-lilac.vercel.app/'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   // Kích hoạt bộ kiểm tra dữ liệu lỗi Validation Pipe toàn hệ thống
   app.useGlobalPipes(
