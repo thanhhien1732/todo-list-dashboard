@@ -1,6 +1,6 @@
 # Todo App
 
-Một ứng dụng quản lý công việc đầy đủ giữa frontend và backend, được xây dựng bằng NestJS, Next.js, Prisma và MySQL.
+Ứng dụng quản lý công việc được xây dựng bằng NestJS, Next.js, Prisma và MySQL.
 
 ## ✨ Tính năng chính
 
