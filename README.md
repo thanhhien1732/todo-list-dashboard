@@ -1,4 +1,4 @@
-# Todo App
+# Todo List Dashboard App
 
 Ứng dụng quản lý công việc được xây dựng bằng NestJS, Next.js, Prisma và MySQL.
 
